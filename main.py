@@ -2,8 +2,8 @@ from rolling import *
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv('Data/Data.csv', index_col='Date', date_format='%d/%m/%Y', sep=';')
-benchmark = pd.read_csv('Data/CDI.csv', index_col='Date', date_format='%m/%d/%Y', sep=',')
+data = pd.read_csv('Data/AllTrend.csv', index_col='Date', date_format='%d/%m/%Y', sep=';')
+benchmark = pd.read_csv('Data/CDI_AllTrend.csv', index_col='Date', date_format='%m/%d/%Y', sep=',')
 
 cagr = (data['Value'].iloc[-1] / data['Value'].iloc[0]) ** (1 / (len(data) / 252)) - 1
 
