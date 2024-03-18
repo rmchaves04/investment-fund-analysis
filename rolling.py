@@ -3,11 +3,11 @@ import matplotlib.ticker as mtick
 
 def plot_monthly_rolling_returns(data, period=12, benchmark=None):
     data = data.resample('M').last()
-    data['Rolling Return'] = data['Close'].pct_change(period) * 100
+    data['Rolling Return'] = data['Value'].pct_change(period) * 100
 
     if benchmark is not None:
         benchmark = benchmark.resample('M').last()
-        benchmark['Rolling Return'] = benchmark['Close'].pct_change(period) * 100
+        benchmark['Rolling Return'] = benchmark['Value'].pct_change(period) * 100
         colors = ['green' if data_return > benchmark_return else 'red' 
                 for data_return, benchmark_return in zip(data['Rolling Return'], benchmark['Rolling Return'])]
         plt.bar(benchmark.index, benchmark['Rolling Return'], label='Benchmark', alpha=0.7, width=20, color='gray')
@@ -29,7 +29,7 @@ def calculate_daily_rolling_returns(data):
     results = {}
 
     for tf in time_frames:
-        rolling_returns = data['Close'].pct_change(tf).rolling(tf)
+        rolling_returns = data['Value'].pct_change(tf).rolling(tf)
         min_return = rolling_returns.min().min() * 100
         max_return = rolling_returns.max().max() * 100
         avg_return = rolling_returns.mean().mean() * 100

@@ -5,13 +5,13 @@ import numpy as np
 data = pd.read_csv('Data/Data.csv', index_col='Date', date_format='%d/%m/%Y', sep=';')
 benchmark = pd.read_csv('Data/CDI.csv', index_col='Date', date_format='%m/%d/%Y', sep=',')
 
-cagr = (data['Close'].iloc[-1] / data['Close'].iloc[0]) ** (1 / (len(data) / 252)) - 1
+cagr = (data['Value'].iloc[-1] / data['Value'].iloc[0]) ** (1 / (len(data) / 252)) - 1
 
-rolling_max = data['Close'].cummax()
-daily_drawdown = data['Close'] / rolling_max - 1
+rolling_max = data['Value'].cummax()
+daily_drawdown = data['Value'] / rolling_max - 1
 max_dd = daily_drawdown.min()
 
-data_monthly = data['Close'].resample('M').last()
+data_monthly = data['Value'].resample('M').last()
 monthly_volatility = data_monthly.pct_change().std()
 annualized_monthly_volatility = monthly_volatility * np.sqrt(12)
 
