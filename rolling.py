@@ -1,12 +1,19 @@
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 
-def plot_monthly_rolling_returns(data, period=12):
+def plot_monthly_rolling_returns(data, period=12, benchmark=None):
     data = data.resample('M').last()
     data['Rolling Return'] = data['Close'].pct_change(period) * 100
 
-    colors = ['green' if x > 0 else 'red' for x in data['Rolling Return']]
-
+    if benchmark is not None:
+        benchmark = benchmark.resample('M').last()
+        benchmark['Rolling Return'] = benchmark['Close'].pct_change(period) * 100
+        colors = ['green' if data_return > benchmark_return else 'red' 
+                for data_return, benchmark_return in zip(data['Rolling Return'], benchmark['Rolling Return'])]
+        plt.bar(benchmark.index, benchmark['Rolling Return'], label='Benchmark', alpha=0.7, width=20, color='gray')
+    else:
+        colors = ['green' if data_return > 0 else 'red' for data_return in data['Rolling Return']]
+    
     plt.bar(data['Rolling Return'].index, data['Rolling Return'], width=20, color=colors)
     plt.title(f'{period}-month returns')
     plt.xlabel('Date')
@@ -22,10 +29,10 @@ def calculate_daily_rolling_returns(data):
     results = {}
 
     for tf in time_frames:
-        rolling_returns = data['Close'].pct_change(tf).rolling(tf).mean() * 100
-        min_return = rolling_returns.min()
-        max_return = rolling_returns.max()
-        avg_return = rolling_returns.mean()
+        rolling_returns = data['Close'].pct_change(tf).rolling(tf)
+        min_return = rolling_returns.min().min() * 100
+        max_return = rolling_returns.max().max() * 100
+        avg_return = rolling_returns.mean().mean() * 100
 
         results[tf//252] = {"Min": min_return, "Max": max_return, "Avg": avg_return}
 
