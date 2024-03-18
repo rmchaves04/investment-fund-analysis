@@ -22,7 +22,7 @@ def plot_rolling_returns(rolling_returns):
     for r in rolling_returns.values():
         plt.vlines(i, r['Min'], r['Max'], colors='k', linestyles='solid')
         plt.plot(i, r['Max'], 'g^', label='Maximum Return' if i == 0 else "")
-        plt.plot(i, r['Avg'], 's', color='gray', label='Average Return' if i == 0 else "")
+        plt.plot(i, r['Avg'], 'o', color='gray', label='Average Return' if i == 0 else "")
         plt.plot(i, r['Min'], 'rs', label='Minimum Return' if i == 0 else "")
         i += 1
 
@@ -32,8 +32,7 @@ def plot_rolling_returns(rolling_returns):
     plt.ylabel('Return')
     plt.grid(True)
 
-    fmt = '%.0f%%'
-    yticks = mtick.FormatStrFormatter(fmt)
+    yticks = mtick.FormatStrFormatter('%.0f%%')
     plt.gca().yaxis.set_major_formatter(yticks)
 
     plt.legend()
