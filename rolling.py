@@ -1,7 +1,23 @@
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 
-def calculate_rolling_returns(data):
+def plot_monthly_rolling_returns(data, period=12):
+    data = data.resample('M').last()
+    data['Rolling Return'] = data['Close'].pct_change(period) * 100
+
+    colors = ['green' if x > 0 else 'red' for x in data['Rolling Return']]
+
+    plt.bar(data['Rolling Return'].index, data['Rolling Return'], width=20, color=colors)
+    plt.title(f'{period}-month returns')
+    plt.xlabel('Date')
+    plt.ylabel('Return (%)')
+    plt.grid(True)
+
+    yticks = mtick.FormatStrFormatter('%.0f%%')
+    plt.gca().yaxis.set_major_formatter(yticks)
+    plt.show()
+
+def calculate_daily_rolling_returns(data):
     time_frames = [252, 504, 756, 1260]
     results = {}
 
@@ -15,7 +31,7 @@ def calculate_rolling_returns(data):
 
     return results
 
-def plot_rolling_returns(rolling_returns):
+def plot_vertical_rolling_returns(rolling_returns):
     plt.figure(figsize=(12,6))
 
     i = 0
