@@ -5,6 +5,8 @@ def plot_monthly_rolling_returns(data, period=12, benchmark=None):
     data = data.resample('M').last()
     data['Rolling Return'] = data['Value'].pct_change(period) * 100
 
+    plt.figure(figsize=(12,6))
+
     if benchmark is not None:
         benchmark = benchmark.resample('M').last()
         benchmark['Rolling Return'] = benchmark['Value'].pct_change(period) * 100
@@ -31,7 +33,9 @@ def plot_monthly_rolling_returns(data, period=12, benchmark=None):
     plt.show()
 
 def calculate_daily_rolling_returns(data):
-    time_frames = list(range(60, 1231, 60))
+    time_frames = list(range(3, 61, 3))
+
+    data = data.resample('M').last()
     results = {}
 
     for tf in time_frames:
@@ -40,7 +44,7 @@ def calculate_daily_rolling_returns(data):
         max_return = rolling_returns.max().max() * 100
         avg_return = rolling_returns.mean().mean() * 100
 
-        results[tf//20] = {"Min": min_return, "Max": max_return, "Avg": avg_return}
+        results[tf] = {"Min": min_return, "Max": max_return, "Avg": avg_return}
 
     return results
 
