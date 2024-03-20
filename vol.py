@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 
 def plot_annualized_monthly_vol(data):
-    data['Monthly Volatility'] = data['Value'].pct_change().rolling(20).std() * np.sqrt(252) * 100
+    data['Monthly Volatility'] = data['Value'].pct_change().rolling('30D').std() * np.sqrt(252) * 100
+    
+    print(data['Monthly Volatility'].max())
 
     plt.figure(figsize=(12,6))
     plt.plot(data['Monthly Volatility'], label='Volatility', color='blue')
