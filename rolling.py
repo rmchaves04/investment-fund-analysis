@@ -32,7 +32,7 @@ def plot_monthly_rolling_returns(data, period=12, benchmark=None):
     plt.legend()
     plt.show()
 
-def calculate_daily_rolling_returns(data):
+def calculate_monthly_rolling_returns(data):
     time_frames = list(range(3, 61, 3))
 
     data = data.resample('M').last()
